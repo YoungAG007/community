@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AlphaController {
     @RequestMapping("/hello")
     @ResponseBody
-    public String sayHello(){
-        return "Hello Spring boot !!!";
+    public String sayHello(String name){
+        return "Hello Spring boot !!!"+name;
     }
 }
