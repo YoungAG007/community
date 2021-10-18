@@ -10,6 +10,7 @@ public class AlphaController {
     @RequestMapping("/hello")
     @ResponseBody
     public String sayHello(String name){
+        System.out.println("pull test");
         return "Hello Spring boot 1122!!!"+name;
     }
 }
