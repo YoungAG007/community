@@ -1,8 +1,10 @@
 package com.nowcoder.community;
 
 import com.nowcoder.community.dao.DiscussPostMapper;
+import com.nowcoder.community.dao.LoginTicketMapper;
 import com.nowcoder.community.dao.UserMapper;
 import com.nowcoder.community.entity.DiscussPost;
+import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,8 @@ public class MapperTest {
     private UserMapper userMapper;
     @Autowired
     private DiscussPostMapper discussPostMapper;
+    @Autowired
+    private  LoginTicketMapper  loginTicketMapper;
 
     @Test
     public void testSelectUserMapper(){
@@ -52,7 +56,7 @@ public class MapperTest {
     }
     @Test
     public void testUpdate(){
-        int row1 = userMapper.updateStatus(150, "1");
+        int row1 = userMapper.updateStatus(150, 1);
         int row2 = userMapper.updateHeader(151, "http://www.nowcoder.com/102.png");
         int row3 = userMapper.updatePassword(151, "78910");
         System.out.println(row1);
@@ -68,6 +72,33 @@ public class MapperTest {
         }
         int rows = discussPostMapper.selectDiscussPostRows(149);
         System.out.println(rows);
+    }
+
+    @Test
+    public void testLoginTicketMapper_insert() {
+        //测试插入方法
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(101);
+        loginTicket.setTicket("abc");
+        loginTicket.setStatus(0);
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
+        int feedback = loginTicketMapper.insertLoginTicket(loginTicket);
+        System.out.println(feedback);
+
+    }
+    @Test
+    public void testLoginTicketMapper_select(){
+            //测试查询方法
+            LoginTicket ticket = loginTicketMapper.selectByTicket("abc");
+            System.out.println(ticket);
+    }
+
+    @Test
+    public void testLoginTicketMapper_update(){
+        //测试更新状态的方法
+        loginTicketMapper.updateStatus("abc", 1);
+        LoginTicket loginticket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginticket);
     }
 
 }

@@ -13,7 +13,7 @@ public interface UserMapper {
 
     int insertUser(User user);
 
-    int updateStatus(int id,String status);
+    int updateStatus(int id,int status);
 
     int updateHeader(int id,String headerUrl);
 
