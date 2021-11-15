@@ -1,11 +1,7 @@
 package com.nowcoder.community;
 
-import com.nowcoder.community.dao.DiscussPostMapper;
-import com.nowcoder.community.dao.LoginTicketMapper;
-import com.nowcoder.community.dao.UserMapper;
-import com.nowcoder.community.entity.DiscussPost;
-import com.nowcoder.community.entity.LoginTicket;
-import com.nowcoder.community.entity.User;
+import com.nowcoder.community.dao.*;
+import com.nowcoder.community.entity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +22,10 @@ public class MapperTest {
     private DiscussPostMapper discussPostMapper;
     @Autowired
     private  LoginTicketMapper  loginTicketMapper;
+    @Autowired
+    private CommentMapper commentMapper;
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     public void testSelectUserMapper(){
@@ -75,6 +75,12 @@ public class MapperTest {
     }
 
     @Test
+    public void testSelectPostbyId(){
+        DiscussPost discussPost = discussPostMapper.selectDiscussPostById(283);
+        System.out.println(discussPost);
+    }
+
+    @Test
     public void testLoginTicketMapper_insert() {
         //测试插入方法
         LoginTicket loginTicket = new LoginTicket();
@@ -99,6 +105,43 @@ public class MapperTest {
         loginTicketMapper.updateStatus("abc", 1);
         LoginTicket loginticket = loginTicketMapper.selectByTicket("abc");
         System.out.println(loginticket);
+    }
+
+    @Test
+    public void testCommentMapper(){
+        List<Comment> comments = commentMapper.selectCommentsByEntity(1, 228, 0, 10);
+        for(Comment comment:comments){
+            System.out.println(comment);
+        }
+        int count = commentMapper.selectCountByEntity(2, 12);
+        System.out.println(count);
+    }
+    @Test
+    public void testMessageMapper(){
+        System.out.println("***********11*********");
+        List<Message> list = messageMapper.selectConversations(111, 0, 20);
+        for(Message message : list){
+            System.out.println(message);
+        }
+
+        System.out.println("***********22*********");
+        int count = messageMapper.selectConversationCount(111);
+        System.out.println(count);
+
+        System.out.println("**********33**********");
+        List<Message> messages = messageMapper.selectLetters("111_112", 0, 10);
+        for(Message message : messages){
+            System.out.println(message);
+        }
+
+        System.out.println("*********44***********");
+        int letterCount = messageMapper.selectLetterCount("111_112");
+        System.out.println(letterCount);
+
+        System.out.println("**********55**********");
+        int letterUnreadCount = messageMapper.selectLetterUnreadCount(131, "111_131");
+        System.out.println(letterUnreadCount);
+
     }
 
 }

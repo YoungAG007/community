@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -51,6 +52,12 @@ public class UserController {
         return "/site/setting";
     }
 
+    /**
+     *
+     * @param headImage 上传的图片信息
+     * @param model
+     * @return
+     */
     @LoginRequired
     @PostMapping("/upload")
     public String uploadHeader(MultipartFile headImage, Model model){
@@ -84,6 +91,11 @@ public class UserController {
         return "redirect:/index";
     }
 
+    /**
+     * 利用web图片路径 转化为本地路径 读取存在硬盘中的图片
+     * @param fileName
+     * @param response
+     */
     @RequestMapping(value = "/header/{fileName}", method = RequestMethod.GET)
     public void getHeader(@PathVariable("fileName") String fileName, HttpServletResponse response){
         //服务器存放路径
@@ -105,6 +117,26 @@ public class UserController {
             }
         } catch (IOException e) {
             logger.error("读取头像失败：" + e.getMessage());
+        }
+    }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(String oldPassword, String newPassword, Model model){
+        User user = hostHolder.getUser();
+        if(user == null){
+            logger.error("登录状态异常，请重新登录");
+            return "redirect:/login";
+        }
+        //调用service层更新方法
+        Map<String, Object> map = userService.updatePassword(user.getId(), oldPassword, newPassword);
+        if(map == null || map.isEmpty()){
+            //成功登录 重定向到退出功能 在logout中会重定向到登录页面
+            return "redirect:/logout";
+        }else {
+            model.addAttribute("oldPasswordMsg", map.get("oldPasswordMsg"));
+            model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
+            //出现错误 返回到设置页面
+            return "/site/setting";
         }
     }
 

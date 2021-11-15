@@ -2,6 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.entity.DiscussPost;
+import com.nowcoder.community.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -105,5 +106,14 @@ public class AlphaController {
         empList.add(map1);
         empList.add(map2);
         return empList;
+    }
+
+    //ajax示例
+    @RequestMapping(path = "ajax",method = RequestMethod.POST)
+    @ResponseBody
+    public String testQAjax(String name, int age){
+        System.out.println(name);
+        System.out.println(age);
+        return CommunityUtil.getJSONString(0,"操作成功");
     }
 }
